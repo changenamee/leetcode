@@ -44,5 +44,21 @@ public:
             }while(ope->next);
         }   
         return head;
+        
+         //快慢指针
+        ListNode *first,*second;
+        ListNode *temp = new ListNode(0,head);
+        first = head;
+        second = temp;
+        for(int i=0;i<n;i++)
+            first = first->next;
+        while(first){
+            first = first->next;
+            second = second->next;
+        }
+        second->next = second->next->next;
+        ListNode *res = temp->next; //先next，否则删了temp，res无法下一个
+        delete temp;
+        return res;
     }
 };
