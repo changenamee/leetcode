@@ -1,0 +1,137 @@
+//将两个有序数组中的数据添加到一个新的数组中
+//但是我这个解法会改变之前的两个数组，使变为空数组...
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size();
+        int n = nums2.size();
+        double res;
+        vector<int> na;
+        int i=0,j=0;
+        //依次比较两个数组中较小的值，放入新数组中
+        while(!nums1.empty() && !nums2.empty()){
+            if(nums1[0] <= nums2[0]){
+                na.push_back(nums1[0]);
+                nums1.erase(nums1.begin());
+            }else{
+                na.push_back(nums2[0]);
+                nums2.erase(nums2.begin());
+            }
+        }
+        if(!nums1.empty()){
+            for(int i=0;i<nums1.size();i++)
+                na.push_back(nums1[i]);
+        }else if(!nums2.empty()){
+            for(int i=0;i<nums2.size();i++)
+                na.push_back(nums2[i]);
+        }   
+        if((m+n)%2==0){
+            return (double)(na[(m+n)/2]+na[((m+n)/2)-1])/2;
+        }else{
+            return (double)na[(m+n)/2];
+        }
+    }
+};
+
+//暴力解法,不用改变原数组....
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size();
+        int n = nums2.size();
+        vector<int> temp;
+        //中位数在第二个数组中
+        if(m == 0){
+            if(n%2==0){
+                return (double)(nums2[n/2]+nums2[(n/2)-1])/2;
+            }else{
+                return (double)nums2[n/2];
+            }
+        }
+        //中位数在第一个数组中
+        if(n == 0){
+            if(m%2==0){
+                return (double)(nums1[m/2]+nums1[(m/2)-1])/2;
+            }else{
+                return (double)nums1[m/2];
+            }
+        }
+        //合并两个数组
+        int i=0,j=0;
+        int cnt = 0;
+        while(cnt < (m+n)){
+            //遍历完了第一个数组
+            if(i == m){
+                while(j < n){
+                    temp.push_back(nums2[j]);
+                    cnt++;
+                    j++;
+                }
+                break;
+            }
+            //遍历完了第二个数组
+            if(j == n){
+                while(i < m){
+                    temp.push_back(nums1[i]);
+                    i++;
+                    cnt++;
+                }
+                break;
+            }
+            //
+            if(nums1[i] <= nums2[j]){
+                temp.push_back(nums1[i]);
+                i++;
+                cnt++;
+            }else{
+                temp.push_back(nums2[j]);
+                j++;
+                cnt++;
+            }
+        }
+        // 1 2 3 4 5 6
+        if((m+n)%2==0){
+            return (double)(temp[(m+n)/2]+temp[((m+n)/2)-1])/2;
+        }else{
+            return (double)temp[(m+n)/2];
+        }
+    }
+};
+//二分法
+class Solution {
+public:
+    int findKMin(vector<int> &nums1,vector<int> &nums2,int k){
+        int m = nums1.size();
+        int n = nums2.size();
+        //指向两个数组的当前位置
+        int cnt1 = 0,cnt2 = 0;
+
+        while(true){
+            //临界条件
+            if(cnt1 == m)   return nums2[cnt2+k-1];
+            if(cnt2 == n)   return nums1[cnt1+k-1];
+            //k=1,+1,-1,0
+            if(k == 1)  return min(nums1[cnt1],nums2[cnt2]);
+
+            int ncnt1 = min(cnt1+k/2-1,m-1);  //更新当前位置
+            int ncnt2 = min(cnt2+k/2-1,n-1);
+            int val1 = nums1[ncnt1];
+            int val2 = nums2[ncnt2];
+            if(val1 <= val2){ //比较两个数组当前位置大小，消除小的一个数组的前ncnt1个数字，则大小减半，二分法
+                k -= ncnt1-cnt1+1;
+                cnt1 = ncnt1+1;
+            }else{
+                k -= ncnt2-cnt2+1;
+                cnt2 = ncnt2+1;
+            }
+        }
+    }
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int len = nums1.size()+nums2.size();
+        if(len%2==0){ //偶数
+            return (findKMin(nums1,nums2,len/2)+findKMin(nums1,nums2,(len/2)+1))/2.0;
+        }else{  //奇数
+            return findKMin(nums1,nums2,(len+1)/2);
+        }
+    }
+};
