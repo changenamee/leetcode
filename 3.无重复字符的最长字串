@@ -1,0 +1,41 @@
+//鬼才想法。。。利用map查看是否重复
+//我去看看别的解法~
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int max = 0;
+        int cnt = 0;
+        int len = s.length();
+        if(len == 0)    return 0;   //空字符串
+        map<char,int> res;
+        for(int i=0;i<len;i++){
+            int cnt = 0;
+            res.clear();
+            for(int j=i;j<len;j++){
+                if(res.count(s[j]) > 0) break;
+                res.insert(pair<char,int>(s[j],cnt));
+                cnt++;
+                if(res.size() > max)    max = res.size();
+            }
+        }
+        return max;
+    }
+};
+
+//左右指针
+unordered_set<char> res;
+        int end = -1;    //右指针
+        int len = s.length();
+        int max = 0;
+        for(int i=0;i<len;i++){
+            if(i != 0){
+                res.erase(s[i-1]);  //左指针右移一位
+            }
+            //右指针向右移动，直到遇到重复字符
+            while(end+1 < len && !res.count(s[end+1])){
+                res.insert(s[end+1]);
+                end++;
+            }
+            if(res.size() > max) max = res.size();
+        }
+        return max;
