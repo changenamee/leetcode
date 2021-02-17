@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        string s;
+        if(x<0) return false;
+        if(x>=0 && x<10)   return true;
+        while(x){
+            int pop = x%10;
+            x/=10;
+            s.push_back(pop+48);
+        }
+        int len = s.length();
+        int a=0,b=len-1;
+        while(a<b){
+            if(s[a] != s[b])    return false;
+            a++;
+            b--;
+        }
+        return true;
+    }
+};
