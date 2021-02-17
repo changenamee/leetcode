@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        vector<string> rows((numRows>s.size()) ? numRows : s.size());
+        int row = 0;
+        bool flag = false;
+        for(int i=0;i<s.size();i++){
+            rows[row] += s[i];
+            if(row == 0 || row == numRows-1) flag = !flag;
+            row = flag?(row+1):(row-1); 
+        }
+        string res;
+        for(string re:rows) res += re;
+        return res;
+    }
+};
