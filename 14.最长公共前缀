@@ -1,0 +1,44 @@
+//和strs的第一个字符串比较即可
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        int cnt = strs.size();
+        if(!cnt)    return string("");
+        int len = strs[0].size();
+        for(int i=0;i<len;i++){
+            char c = strs[0][i];
+            for(int j=1;j<cnt;j++){
+                //到达当前字符串末尾或者对应字符不相等，则找出最长公共前缀
+                if(i == strs[j].size() || strs[j][i] != c){
+                    return strs[0].substr(0,i);
+                }
+            }
+        }
+        return strs[0];
+    }
+};
+//字符串依次比较，选出公共字符最短的
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        int len = strs.size();
+        if(!len)    return string("");
+        string res = strs[0]; //初始化
+        for(int i=1;i<len;i++){
+            string m = cmp(res,strs[i]);
+            if(m.length() < res.length())
+                res = m; 
+        }
+        return res;
+    }
+    //两个字符串的最长公共前缀
+    string cmp(string s1,string s2){
+        int len = min(s1.length(),s2.length());
+        int i=0;
+        for(i=0;i<len;i++){
+            if(s1[i] != s2[i])
+                break;
+        }
+        return s1.substr(0,i);
+    }
+};
