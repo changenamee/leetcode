@@ -1,0 +1,56 @@
+//暴力法
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        int len = nums.size();
+        sort(nums.begin(),nums.end());
+        int res = INT_MAX;
+        int ans;
+        for(int first=0;first<len;first++){
+            for(int second=first+1;second<len;second++){
+                int third = len-1;
+                while(second<third){
+                    if(abs(nums[first]+nums[second]+nums[third]-target) < res){
+                        res = abs(nums[first]+nums[second]+nums[third]-target);
+                        ans = nums[first]+nums[second]+nums[third];
+                    }
+                    third--;
+                }
+            }
+        }
+        return ans;
+    }
+};
+//排序加双指针
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        int len = nums.size();
+        sort(nums.begin(),nums.end());
+        int res = 10000;  //题目会给出范围
+        for(int first=0;first<len;first++){
+            if(first>0 && nums[first-1]==nums[first])
+                continue;
+            //双指针
+            int second=first+1,third=len-1;
+            while(second<third){
+                int sum = nums[first]+nums[second]+nums[third];
+                if(sum == target)   return target;
+                if(abs(sum-target) < abs(res-target))
+                    res = sum;
+                if(sum > target){   //移动第三个指针
+                    int third0 = third-1;
+                    while(second<third0 && nums[third0] == nums[third])
+                        third0--;
+                    third = third0;
+                }else{  //移动第二个指针
+                    int second0 = second+1;
+                    while(second0<third && nums[second]==nums[second0])
+                        second0++;
+                    second = second0;
+                }
+            }
+        }
+        return res;
+    }
+};
