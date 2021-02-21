@@ -1,0 +1,26 @@
+//利用栈，最后一个左括号的下一个对应的一定是其对应的右括号
+//用map表示括号对应
+class Solution {
+public:
+    bool isValid(string s) {
+        int len = s.length();
+        if(len%2==1)    return false;
+        map<char,char> exp={
+            {')','('},
+            {']','['},
+            {'}','{'}
+        };
+        stack<char> stk;
+        for(int i=0;i<len;i++){
+            //出现右括号
+            if(exp.count(s[i])){
+                if(stk.empty() || stk.top()!=exp[s[i]])
+                    return false;
+                stk.pop();
+            }else{
+                stk.push(s[i]);
+            }
+        }
+        return stk.empty();
+    }
+};
