@@ -1,0 +1,33 @@
+//通过改变节点的值来交换
+//节点实际上并未交换
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(!head) return nullptr;
+        ListNode *temp = head;
+        ListNode *pre = head;
+        int cnt = 1;
+        while(temp){
+            int n = temp->val;
+            if(cnt%2==0){
+                temp->val = pre->val;
+                pre->val = n;
+                pre = temp->next;
+            }
+            cnt++;
+            temp = temp->next;
+        }
+        return head;
+    }
+};
+//递归交换节点
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(!head || !head->next)    return head;
+        ListNode *newHead = head->next;
+        head->next = swapPairs(newHead->next);
+        newHead->next = head;
+        return newHead;
+    }
+};
