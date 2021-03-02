@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int res=0;
+        int size = height.size(); //写在循环外面，.size()返回unsigned int，如果vector大小是0，再-1会变成无穷大，造成死循环
+        for(int i=1;i<size-1;i++){
+            int lm=0,rm=0;
+            for(int j=i;j>=0;j--)
+                lm = max(lm,height[j]);
+            for(int j=i;j<size;j++)
+                rm = max(rm,height[j]);
+            res = res+min(lm,rm)-height[i];
+        }
+        return res;
+    }
+};
