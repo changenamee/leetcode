@@ -1,0 +1,13 @@
+# ninja log v5
+465	584	7009347910121643	liblist.a	4822917e94e2ee2f
+7	82	7009345475171467	CMakeFiles/LeetCode.dir/work/024.cpp.obj	2f61412f36f0f961
+10	625	7009356927747065	CMakeFiles/LeetCode.dir/main.cpp.obj	b7b238a70e558bf1
+11	463	7009353206124825	CMakeFiles/LeetCode.dir/dataStructural/list.cpp.obj	7eb9339f60c7cd82
+2	218	7009357343170327	build.ninja	338895f9f0da3efd
+4	465	7009347908921527	CMakeFiles/list.dir/dataStructural/list.cpp.obj	8e3d354c18567bb6
+11	475	7009352822576074	CMakeFiles/LeetCode.dir/list.cpp.obj	eacc8802d7019eea
+4	619	7009356927696896	CMakeFiles/LeetCode.dir/dataStructural/list1.cpp.obj	f5c85e12187b7c6e
+3	476	7009357451796814	CMakeFiles/LeetCode.dir/main.cpp.obj	b7b238a70e558bf1
+4	455	7009358100818557	CMakeFiles/LeetCode.dir/dataStructural/list.cpp.obj	7eb9339f60c7cd82
+4	465	7009358231313376	CMakeFiles/LeetCode.dir/main.cpp.obj	b7b238a70e558bf1
+465	615	7009358232806048	LeetCode.exe	31181bda66c4bf62

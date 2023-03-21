@@ -74,13 +74,9 @@ void List<T>::ShowData() {
     }
 
     int cnt = 0;
-
     Node<T>* cur = first_->next();
     while (cur) {
-        std::cout << cur << "\t" << cur->data() << "\t";
-        if (++cnt % 10 == 0) {
-            std::cout << std::endl;
-        }
+        std::cout << cur << "\t" << cur->data() << "\n";
         cur = cur->next();
     }
 }
@@ -123,6 +119,89 @@ void List<T>::Reverse() {
     first_->next() = pre;
 }
 
+template<class T>
+bool List<T>::HasCycle() {
+    if (IsEmpty()) {
+        return false;
+    }
+
+    Node<T>* first = first_->next();
+    if (!first->next()) {
+        return false;
+    }
+
+    Node<T>* second = first->next();
+
+    if (first == second) {
+        return true;
+    }
+
+    while (second && second->next()) {
+        if (first == second) {
+            return true;
+        }
+
+        first = first->next();
+        second = second->next()->next();
+    }
+
+    return false;
+}
+
+template<class T>
+List<T>* List<T>::MergeTwoList(List<T> *first, List<T> *second) {
+    if (NULL == first->first_->next()) {
+        return second;
+    }
+
+    if (NULL == second->first_->next()) {
+        return first;
+    }
+
+    List<T>* result = new List<T>();
+    Node<T>* result_head = result->first_;
+
+    Node<T>* first_cur = first->first_->next();
+    Node<T>* second_cur = second->first_->next();
+    if (first_cur->data() < second_cur->data()) {
+        result_head->next() = first_cur;
+        result_head = first_cur;
+        first_cur = first_cur->next();
+    }
+    else {
+        result_head->next() = second_cur;
+        result_head = second_cur;
+        second_cur = second_cur->next();
+    }
+
+    std::cout << result_head->data() << std::endl;
+
+    while (first_cur && second_cur) {
+        std::cout << first_cur->data() << "\t" << second_cur->data() << std::endl;
+        if (first_cur->data() < second_cur->data()) {
+            result_head->next() = first_cur;
+            result_head = first_cur;
+            first_cur = first_cur->next();
+        }
+        else {
+            result_head->next() = second_cur;
+            result_head = second_cur;
+            second_cur = second_cur->next();
+        }
+        std::cout << result_head->data() << std::endl;
+    }
+
+    if (first_cur) {
+        result_head->next() = first_cur;
+    }
+
+    if (second_cur) {
+        result_head->next() = second_cur;
+    }
+
+    return result;
+}
+
 int main() {
     // test list
     {
@@ -133,19 +212,45 @@ int main() {
         list->PushBack(1);
         list->PushFront(4);
         list->PushFront(5);
+        std::cout << "1" << std::endl;
         list->ShowData();
 
-        Node<int>* target = list->Search(2);
-        if (nullptr != target) {
-            std::cout << "target: " << target << "\tval is " << target->data() << std::endl;
+        // has cycle
+        {
+            // 5 4 3 2 1
+            Node<int>* first = list->Search(2);
+            std::cout << first << "\t" << first->data() << "\n";
+            Node<int>* second = list->Search(5);
+            std::cout << second << "\t" << second->data() << "\n";
+
+            first->next() = second;
+
+            bool if_crycle = list->HasCycle();
+            if (if_crycle) {
+                std::cout << "has crycle" << std::endl;
+            }
+            else {
+                std::cout << "has no crycle" << std::endl;
+            }
         }
 
-        list->Reverse();
-        list->ShowData();
+        // merge
+        {
+            List<int>* list1 = new List<int>;
+            List<int>* list2 = new List<int>;
 
-        target = list->Search(2);
-        if (nullptr != target) {
-            std::cout << "target: " << target << "\tval is " << target->data() << std::endl;
+            list1->PushBack(1);
+            list1->PushBack(3);
+            list1->PushBack(5);
+
+            list2->PushBack(4);
+            list2->PushBack(5);
+            list2->PushBack(6);
+
+            List<int>* merge_list = list1->MergeTwoList(list1, list2);
+            if (!merge_list->IsEmpty()) {
+                merge_list->ShowData();
+            }
         }
     }
 

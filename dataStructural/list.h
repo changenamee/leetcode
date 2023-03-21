@@ -59,6 +59,8 @@ public:
     Node<T>* Search(T val);
 
     void Reverse();
+    bool HasCycle();
+    List<T>* MergeTwoList(List<T>* first, List<T>* second);
 };
 
 #endif //LEETCODE_LIST_H
